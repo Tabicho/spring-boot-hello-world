@@ -6,6 +6,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
+import java.time.Instant;
 
 import org.slf4j.Logger;
 import org.springframework.http.MediaType;
@@ -26,6 +27,8 @@ public class HelloWorldController {
     public static final String MESSAGE_KEY = "message";
     public static final String HOSTNAME_KEY = "hostname";
     public static final String IP_KEY = "ip";
+    public static final String TIMESTAMP_KEY = "timestamp";
+
 
     @GetMapping(path = "/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Map<String, String> helloWorld() throws UnknownHostException {
@@ -35,10 +38,12 @@ public class HelloWorldController {
     private Map<String, String> getResponse() throws UnknownHostException {
         String host = InetAddress.getLocalHost().getHostName();
         String ip = InetAddress.getLocalHost().getHostAddress();
+        String timestamp = Instant.now().toString(); //ISO format
         Map<String, String> response = new HashMap<>();
         response.put(MESSAGE_KEY, "Hello World!");
         response.put(HOSTNAME_KEY, host);
         response.put(IP_KEY, ip);
+        response.put(TIMESTAMP_KEY,timestamp);
         LOG.info("Returning {}", response);
         return response;
     }
